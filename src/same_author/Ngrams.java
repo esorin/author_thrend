@@ -26,7 +26,7 @@ public class Ngrams
 		for(String s : ngrams)
 		{
 			tw = new TaggedWord("");
-			tw.setTag(s);
+			tw.setTag(s.replaceAll("\\s",""));
 			words.add(tw);
 		}
 		
@@ -54,11 +54,26 @@ public class Ngrams
 	{
 		String s = "";
 		
-		for(TaggedWord pos : words){
+		for(TaggedWord pos : words)
+		{
 			 s += pos.tag() + " ";
 		}
 		
-		s += count;
+		//s += count;
+		return s;
+	}
+	
+	//@Override
+	public String toString1() 
+	{
+		String s = "";
+		
+		for(int i = 0; i < words.size(); i++)
+		{
+			 s += words.get(i).tag() + " " + words.get(i).tag().length() + " ";
+		}
+		
+		//s += count;
 		return s;
 	}
 
@@ -66,8 +81,10 @@ public class Ngrams
 	public boolean equals(Object other) 
 	{
 		
-		for(int i = 0; i < words.size(); i++){
-			if(!words.get(i).tag().equals(((Ngrams)other).words.get(i).tag())){
+		for(int i = 0; i < words.size(); i++)
+		{
+			if(!words.get(i).tag().equals(((Ngrams)other).words.get(i).tag()))
+			{
 				return false;
 			}
 		}

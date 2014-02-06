@@ -59,6 +59,7 @@ public class Main {
 			// -- get the freq of ngrams -- //
 			//text
 			file1 = "input/1.txt";
+			//file1 = "in.txt";
 			text1Str = Functions.readFile(file1);
 		    rawWords1 = tokenizerFactory.getTokenizer(new StringReader(text1Str)).tokenize();
 		    wordsList1 = tagger.apply(rawWords1);
@@ -99,10 +100,12 @@ public class Main {
 		    	}
 		    }
 		    
+		    /*
 		    for(Sentence sen : sentenceList1)
 		    {
-		    	//System.out.println(sen);
+		    	System.out.println(sen);
 		    }
+		    */
 		    
 		    for(Ngrams ngram : grams2)
 		    {
@@ -119,13 +122,14 @@ public class Main {
 		    //we assign for every ngram in the DB the freq of it that we calculate in the current text
 		    for(Ngrams n_db : grams2_DB)
 		    {
-		    	System.out.println(n_db);
+		    	//System.out.println(n_db);
+		    	//System.out.println("-------------");
 		    	for(Ngrams n : grams2)
 		    	{
-		    		if(n_db.equals(n))
+		    		//System.out.println(n);
+		    		if(n.equals(n_db))
 		    		{
-		    			n_db.freq = n.freq;
-		    			
+		    			n_db.freq = n.freq;			
 		    		}
 		    	}
 		    }

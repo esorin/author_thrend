@@ -15,23 +15,6 @@ import edu.stanford.nlp.process.PTBTokenizer;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 public class Main {
-
-	/*Deschide si citeste fisier*/
-	public static String readFile(String path) throws IOException 
-	{
-		  FileInputStream stream = new FileInputStream(new File(path));
-		  try 
-		  {
-		    FileChannel fc = stream.getChannel();
-		    MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
-		    /* Instead of using default, pass in a decoder. */
-		    return Charset.defaultCharset().decode(bb).toString();
-		  }
-		  finally 
-		  {
-		    stream.close();
-		  }
-	}
 	
 	/**
 	 * @param args
@@ -50,13 +33,36 @@ public class Main {
 			ArrayList<TaggedWord> wordsList1;
 			ArrayList<Sentence> sentenceList1 = new ArrayList<Sentence>();
 			Sentence s;
-									
-			//text 1
-			file1 = "in.txt";
-			text1Str = readFile(file1);
+			
+		    //ngrams
+		    ArrayList<Ngrams> grams2 = new ArrayList<Ngrams>();
+		    ArrayList<Ngrams> grams3 = new ArrayList<Ngrams>();
+		    ArrayList<Ngrams> grams4 = new ArrayList<Ngrams>();
+		    ArrayList<Ngrams> grams5 = new ArrayList<Ngrams>();
+		    
+		    ArrayList<Ngrams> grams2_DB = new ArrayList<Ngrams>();
+		    ArrayList<Ngrams> grams3_DB = new ArrayList<Ngrams>();
+		    ArrayList<Ngrams> grams4_DB = new ArrayList<Ngrams>();
+		    ArrayList<Ngrams> grams5_DB = new ArrayList<Ngrams>();
+		    
+		    int countNgrams2 = 0;
+		    int countNgrams3 = 0;
+		    int countNgrams4 = 0;
+		    int countNgrams5 = 0;
+		    
+			// -- Extract all ngrams possibilities from all texts and write to file --//
+		    //Functions.putNgramsinFiles();
+		    
+		    //get ngrams from files
+		    grams2_DB = Functions.getNgramsFromFiles(2);
+		    
+			// -- get the freq of ngrams -- //
+			//text
+			file1 = "input/1.txt";
+			text1Str = Functions.readFile(file1);
 		    rawWords1 = tokenizerFactory.getTokenizer(new StringReader(text1Str)).tokenize();
 		    wordsList1 = tagger.apply(rawWords1);
-		    
+		    	    
 		    //impartim in propozitii
 		    s = new Sentence();
 		    for(TaggedWord w : wordsList1)
@@ -70,29 +76,64 @@ public class Main {
 		    }
 		    
 		    //calculam frecventele POS n-gramelelor
-		    for(Sentence sen : sentenceList1){
-		    	
-		    }
-		    for(Sentence sen : sentenceList1)
+		    for(Sentence sen1 : sentenceList1)
 		    {
-		    	//2-grame
-		    	for(ArrayList n2grams : sen.get_2_grams())
+		    	//2- grams
+		    	for(Ngrams ngram1 : sen1.get_ngrams(2))
 		    	{
+		    		if(grams2.contains(ngram1))
+		    		{
+		    			continue;
+		    		}
+		    		grams2.add(ngram1);
 		    		for(Sentence sen2 : sentenceList1)
 		    		{
-		    			for(ArrayList n2grams_all : sen2.get_2_grams())
+		    			for(Ngrams ngram2 : sen2.get_ngrams(2))
 		    			{
-		    				if(((TaggedWord)n2grams.get(0)).tag().equals(((TaggedWord)n2grams_all.get(0)).tag()) &&
-		    				   ((TaggedWord)n2grams.get(1)).tag().equals(((TaggedWord)n2grams_all.get(1)).tag()))
+		    				if(ngram1.equals(ngram2))
 		    				{
-		    					
+		    					ngram1.incrementCount();
 		    				}
 		    			}
 		    		}
 		    	}
 		    }
 		    
-			
+		    for(Sentence sen : sentenceList1)
+		    {
+		    	//System.out.println(sen);
+		    }
+		    
+		    for(Ngrams ngram : grams2)
+		    {
+		    	countNgrams2 += ngram.count;
+		    }
+		    System.out.println("total count= " + countNgrams2);
+		    
+		    for(Ngrams ngram : grams2)
+		    {
+		    	ngram.freq = (float)ngram.count/countNgrams2;
+		    	//System.out.printf(ngram + " %.8f\n", ngram.freq);
+		    }
+		    
+		    //we assign for every ngram in the DB the freq of it that we calculate in the current text
+		    for(Ngrams n_db : grams2_DB)
+		    {
+		    	System.out.println(n_db);
+		    	for(Ngrams n : grams2)
+		    	{
+		    		if(n_db.equals(n))
+		    		{
+		    			n_db.freq = n.freq;
+		    			
+		    		}
+		    	}
+		    }
+		    
+		    //we write the output file of the ngrams with the freq attached
+		    Functions.outputNgramsFreq(grams2_DB);
+		    
+		    
 		}
 		catch(Exception e)
 		{

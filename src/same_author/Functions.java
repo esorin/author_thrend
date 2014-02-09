@@ -127,9 +127,11 @@ public class Functions {
 			PrintWriter f_2grams = new PrintWriter("output/2gramsFreq.txt", "UTF-8");
 			
 			//write to file of 2 grams
-			for(Ngrams ngram : ngrams)
+			f_2grams.printf("##|##\n");
+			f_2grams.printf("Ngrams|Frequency\n");
+			for(int i=0; i<ngrams.size(); i++)
 			{
-				f_2grams.printf(ngram + " %.8f\n", ngram.freq);
+				f_2grams.printf(i + " " + ngrams.get(i).toString() + "|%.8f\n", ngrams.get(i).freq);
 			}
 			
 			f_2grams.close();

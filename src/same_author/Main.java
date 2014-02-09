@@ -58,7 +58,7 @@ public class Main {
 		    
 			// -- get the freq of ngrams -- //
 			//text
-			file1 = "input/1.txt";
+			file1 = "input/w1.txt";
 			//file1 = "in.txt";
 			text1Str = Functions.readFile(file1);
 		    rawWords1 = tokenizerFactory.getTokenizer(new StringReader(text1Str)).tokenize();

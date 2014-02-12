@@ -60,6 +60,10 @@ public class Functions {
 			String f2 = "input/2.txt";
 			String f3 = "input/3.txt";
 			String f4 = "input/4.txt";
+			String f5 = "input/r1.txt";
+			String f6 = "input/r2.txt";
+			String f7 = "input/r3.txt";
+			String f8 = "input/r4.txt";
 			
 			String text_train = "";
 			List<CoreLabel> rawWords_train;
@@ -70,6 +74,10 @@ public class Functions {
 			text_train += readFile(f2);
 			text_train += readFile(f3);
 			text_train += readFile(f4);
+			text_train += readFile(f5);
+			text_train += readFile(f6);
+			text_train += readFile(f7);
+			text_train += readFile(f8);
 			rawWords_train = tokenizerFactory.getTokenizer(new StringReader(text_train)).tokenize();
 			wordsList_train = tagger.apply(rawWords_train);			
 			

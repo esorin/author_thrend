@@ -51,7 +51,10 @@ public class Main {
 		    int countNgrams5 = 0;
 		    
 			// -- Extract all ngrams possibilities from all texts and write to file --//
-		    //Functions.putNgramsinFiles();
+		    Functions.putNgramsinFiles();
+		    
+		    if(true)
+		    	return;
 		    
 		    //get ngrams from files
 		    grams2_DB = Functions.getNgramsFromFiles(2);

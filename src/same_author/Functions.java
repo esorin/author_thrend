@@ -156,10 +156,10 @@ public class Functions {
 			String f1 = "input/1.txt";
 			String f2 = "input/2.txt";
 			String f3 = "input/3.txt";
-			String f4 = "input/4.txt";
+			String f4 = "input/hg4.txt";
 			String f5 = "input/r1.txt";
 			String f6 = "input/r2.txt";
-			String f7 = "input/r3.txt";
+			String f7 = "input/hg3.txt";
 			String f8 = "input/r4.txt";
 			
 			String text_train = "";
@@ -174,7 +174,7 @@ public class Functions {
 			text_train += readFile(f5);
 			text_train += readFile(f6);
 			text_train += readFile(f7);
-			text_train += readFile(f8);
+			//text_train += readFile(f8);
 			rawWords_train = tokenizerFactory.getTokenizer(new StringReader(text_train)).tokenize();
 			wordsList_train = tagger.apply(rawWords_train);			
 			
@@ -195,27 +195,27 @@ public class Functions {
 			for(Sentence sen : sentenceList_train)
 			{
 				//5- grams
-				for(Ngrams ngram : sen.get_ngrams(5))
+				for(Ngrams ngram : sen.get_ngrams(4))
 				{
-					if(grams5.contains(ngram))
+					if(grams4.contains(ngram))
 					{
 						continue;
 					}
-					grams5.add(ngram);
+					grams4.add(ngram);
 				}
 			}
 						
 			//write to file of 5 grams
-			PrintWriter f_5grams = new PrintWriter("db/5grams.txt", "UTF-8");
+			PrintWriter f_4grams = new PrintWriter("db/4grams.txt", "UTF-8");
 			
 			//write to file of 5 grams
-			for(Ngrams ngram : grams5)
+			for(Ngrams ngram : grams4)
 			{
-				f_5grams.println(ngram);
+				f_4grams.println(ngram);
 				//System.out.println(ngram);
 			}
 			
-			f_5grams.close();
+			f_3grams.close();
 			return;
 		}
 		catch(Exception e)

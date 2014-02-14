@@ -22,6 +22,103 @@ import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 public class Functions {
 	
+	/* Get freq of n-grams from text file */
+	public static void getFreqFromText(ArrayList<Ngrams> grams_DB, String file, int size)
+	{
+		try
+		{
+			MaxentTagger tagger = new MaxentTagger("models/wsj-0-18-caseless-left3words-distsim.tagger");
+			TokenizerFactory<CoreLabel> tokenizerFactory = PTBTokenizer.factory(new CoreLabelTokenFactory(), "");
+			
+			String text1Str;
+			List<CoreLabel> rawWords1;
+			ArrayList<TaggedWord> wordsList1;
+			ArrayList<Sentence> sentenceList1 = new ArrayList<Sentence>();
+			Sentence s;
+
+			text1Str = Functions.readFile(file);
+		    rawWords1 = tokenizerFactory.getTokenizer(new StringReader(text1Str)).tokenize();
+		    wordsList1 = tagger.apply(rawWords1);
+		    
+		    ArrayList<Ngrams> grams_size = new ArrayList<Ngrams>();
+		    int countNgrams_size = 0;
+		    	    
+		    //impartim in propozitii
+		    s = new Sentence();
+		    for(TaggedWord w : wordsList1)
+		    {
+		    	s.addWord(w);
+		    	if(w.tag().equals("."))
+		    	{
+		    		sentenceList1.add(s);
+		    		s = new Sentence();
+		    	}
+		    }
+		    
+		    //calculam frecventele POS n-gramelelor
+		    for(Sentence sen1 : sentenceList1)
+		    {
+		    	//2- grams
+		    	for(Ngrams ngram1 : sen1.get_ngrams(size))
+		    	{
+		    		if(grams_size.contains(ngram1))
+		    		{
+		    			continue;
+		    		}
+		    		grams_size.add(ngram1);
+		    		for(Sentence sen2 : sentenceList1)
+		    		{
+		    			for(Ngrams ngram2 : sen2.get_ngrams(size))
+		    			{
+		    				if(ngram1.equals(ngram2))
+		    				{
+		    					ngram1.incrementCount();
+		    				}
+		    			}
+		    		}
+		    	}
+		    }
+		    
+		    /*
+		    for(Sentence sen : sentenceList1)
+		    {
+		    	System.out.println(sen);
+		    }
+		    */
+		    
+		    for(Ngrams ngram : grams_size)
+		    {
+		    	countNgrams_size += ngram.count;
+		    }
+		    System.out.println("total count= " + countNgrams_size);
+		    
+		    for(Ngrams ngram : grams_size)
+		    {
+		    	ngram.freq = (float)ngram.count/countNgrams_size;
+		    	//System.out.printf(ngram + " %.8f\n", ngram.freq);
+		    }
+		    
+		    //we assign for every ngram in the DB the freq of it that we calculate in the current text
+		    for(Ngrams n_db : grams_DB)
+		    {
+		    	//System.out.println(n_db);
+		    	//System.out.println("-------------");
+		    	for(Ngrams n : grams_size)
+		    	{
+		    		//System.out.println(n);
+		    		if(n.equals(n_db))
+		    		{
+		    			n_db.freq = n.freq;			
+		    		}
+		    	}
+		    }
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+	}
+	
 	/*Deschide si citeste fisier*/
 	public static String readFile(String path) throws IOException 
 	{
@@ -127,22 +224,47 @@ public class Functions {
 		}
 	}
 	
-	public static void outputNgramsFreq(ArrayList<Ngrams> ngrams)
+	public static void outputNgramsFreq(ArrayList<Ngrams> ngrams, int size)
 	{
 		try
 		{
-			//write to file of 2 grams
-			PrintWriter f_2grams = new PrintWriter("output/2gramsFreq.txt", "UTF-8");
+			//write to file of size grams
+			String output_file = "output/" + size + "Freq.txt";
+			PrintWriter f_grams = new PrintWriter(output_file, "UTF-8");
 			
-			//write to file of 2 grams
-			f_2grams.printf("##|##\n");
-			f_2grams.printf("Ngrams|Frequency\n");
+			//write to file of size grams
+			f_grams.printf("##|##\n");
+			f_grams.printf("Ngrams|Frequency\n");
 			for(int i=0; i<ngrams.size(); i++)
 			{
-				f_2grams.printf(i + " " + ngrams.get(i).toString() + "|%.8f\n", ngrams.get(i).freq);
+				f_grams.printf(i + " " + ngrams.get(i).toString() + "|%.8f\n", ngrams.get(i).freq);
 			}
 			
-			f_2grams.close();
+			f_grams.close();
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+	}
+	
+	public static void outputNgramsFreqMultipleFiles(ArrayList<Ngrams> ngrams1, ArrayList<Ngrams> ngrams2, int size)
+	{
+		try
+		{
+			//write to file of size grams
+			String output_file = "output/" + size + "Freq.txt";
+			PrintWriter f_grams = new PrintWriter(output_file, "UTF-8");
+			
+			//write to file of size grams
+			f_grams.printf("##|##\n");
+			f_grams.printf("Frequency1|Frequency2\n");
+			for(int i=0; i<ngrams1.size(); i++)
+			{
+				f_grams.printf( "%.8f|%.8f\n", ngrams1.get(i).freq, ngrams2.get(i).freq);
+			}
+			
+			f_grams.close();
 		}
 		catch(Exception e)
 		{

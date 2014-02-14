@@ -1,9 +1,6 @@
 package same_author;
 
 import java.io.*;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,42 +20,33 @@ public class Main {
 		// TODO Auto-generated method stub
 		try{
 			
-			/*POS*/
-			MaxentTagger tagger = new MaxentTagger("models/wsj-0-18-caseless-left3words-distsim.tagger");
-			TokenizerFactory<CoreLabel> tokenizerFactory = PTBTokenizer.factory(new CoreLabelTokenFactory(), "");
-			
-			String file1;
-			String text1Str;
-			List<CoreLabel> rawWords1;
-			ArrayList<TaggedWord> wordsList1;
-			ArrayList<Sentence> sentenceList1 = new ArrayList<Sentence>();
-			Sentence s;
-			
 		    //ngrams
-		    ArrayList<Ngrams> grams2 = new ArrayList<Ngrams>();
-		    ArrayList<Ngrams> grams3 = new ArrayList<Ngrams>();
-		    ArrayList<Ngrams> grams4 = new ArrayList<Ngrams>();
-		    ArrayList<Ngrams> grams5 = new ArrayList<Ngrams>();
-		    
-		    ArrayList<Ngrams> grams2_DB = new ArrayList<Ngrams>();
-		    ArrayList<Ngrams> grams3_DB = new ArrayList<Ngrams>();
-		    ArrayList<Ngrams> grams4_DB = new ArrayList<Ngrams>();
-		    ArrayList<Ngrams> grams5_DB = new ArrayList<Ngrams>();
-		    
-		    int countNgrams2 = 0;
-		    int countNgrams3 = 0;
-		    int countNgrams4 = 0;
-		    int countNgrams5 = 0;
+		    ArrayList<Ngrams> grams_DB1 = new ArrayList<Ngrams>();
+		    String file1 = "input/1.txt";
+		    ArrayList<Ngrams> grams_DB2 = new ArrayList<Ngrams>();
+		    String file2 = "input/2.txt";
+		    ArrayList<Ngrams> grams_DB3 = new ArrayList<Ngrams>();
+		    String file3 = "in.txt";
+		    int size = 2;
 		    
 			// -- Extract all ngrams possibilities from all texts and write to file --//
-		    Functions.putNgramsinFiles();
+		    //Functions.putNgramsinFiles();
 		    
-		    if(true)
-		    	return;
+		    //if(true)
+		    	//return;
 		    
 		    //get ngrams from files
-		    grams2_DB = Functions.getNgramsFromFiles(2);
+		    grams_DB1 = Functions.getNgramsFromFiles(size);
+		    grams_DB2 = Functions.getNgramsFromFiles(size);
 		    
+		    Functions.getFreqFromText(grams_DB1, file1, size);
+		    Functions.getFreqFromText(grams_DB2, file2, size);
+
+		    //we write the output file of the ngrams with the freq attached
+		    //Functions.outputNgramsFreq(grams_DB, size);
+		    Functions.outputNgramsFreqMultipleFiles(grams_DB1, grams_DB2, size);
+		    
+		    /*
 			// -- get the freq of ngrams -- //
 			//text
 			file1 = "input/w1.txt";
@@ -103,13 +91,7 @@ public class Main {
 		    	}
 		    }
 		    
-		    /*
-		    for(Sentence sen : sentenceList1)
-		    {
-		    	System.out.println(sen);
-		    }
-		    */
-		    
+		    		    
 		    for(Ngrams ngram : grams2)
 		    {
 		    	countNgrams2 += ngram.count;
@@ -136,11 +118,7 @@ public class Main {
 		    		}
 		    	}
 		    }
-		    
-		    //we write the output file of the ngrams with the freq attached
-		    Functions.outputNgramsFreq(grams2_DB);
-		    
-		    
+		    */
 		}
 		catch(Exception e)
 		{

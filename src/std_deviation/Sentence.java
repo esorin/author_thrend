@@ -1,4 +1,4 @@
-package same_author;
+package std_deviation;
 
 import java.util.ArrayList;
 

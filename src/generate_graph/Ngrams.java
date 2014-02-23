@@ -1,4 +1,4 @@
-package same_author;
+package generate_graph;
 
 import java.util.ArrayList;
 

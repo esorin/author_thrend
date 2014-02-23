@@ -1,4 +1,4 @@
-package same_author;
+package std_deviation;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -16,6 +16,7 @@ public class Main {
 	/**
 	 * @param args
 	 */
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try{
@@ -24,7 +25,7 @@ public class Main {
 		    ArrayList<Ngrams> grams_DB1 = new ArrayList<Ngrams>();
 		    String file1 = "input/1.txt";
 		    ArrayList<Ngrams> grams_DB2 = new ArrayList<Ngrams>();
-		    String file2 = "input/2.txt";
+		    String file2 = "input/w1.txt";
 		    ArrayList<Ngrams> grams_DB3 = new ArrayList<Ngrams>();
 		    String file3 = "in.txt";
 		    int size = 2;
@@ -44,7 +45,7 @@ public class Main {
 
 		    //we write the output file of the ngrams with the freq attached
 		    //Functions.outputNgramsFreq(grams_DB, size);
-		    Functions.outputNgramsFreqMultipleFiles(grams_DB1, grams_DB2, size);
+		    Functions.outputNgramsFreqMultipleFiles(size, grams_DB1.size(),grams_DB1, grams_DB2);
 		    
 		    /*
 			// -- get the freq of ngrams -- //

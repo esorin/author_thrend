@@ -23,6 +23,65 @@ import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 public class Functions {
 	
+	/* get freq of ngrams from file */
+	public static ArrayList<Ngrams> getFreqFromFile(int n, String file)
+	{
+		ArrayList<Ngrams> ngrams = new ArrayList<Ngrams>();
+		Ngrams ngram;
+		BufferedReader br;
+		String line;
+		String[] tokens;
+		String[] freqStr;
+		int m;
+		try
+		{
+			br = new BufferedReader(new FileReader(file));
+			while ((line = br.readLine()) != null) 
+			{
+				// process the line.
+				tokens = line.split(" ", n);
+				ngram = new Ngrams(tokens);
+				
+				freqStr = line.split(" | ");
+				m = freqStr.length;
+				ngram.freq = Float.parseFloat(freqStr[m-1]);
+				
+				ngrams.add(ngram);
+			}
+			br.close();
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+	
+		return ngrams;
+	}
+	
+	/* Put in file the freq of ngrams of a text */
+	public static void putFreqsinFile(String filein, int ngrams_dimension, ArrayList<Ngrams> text)
+	{
+		try
+		{
+			String fileout;
+
+			fileout = "db_authors/" + ngrams_dimension + "_" + filein;
+			PrintWriter file_writer = new PrintWriter(fileout, "UTF-8");
+			
+			//write to file of 5 grams
+			for(Ngrams ngram : text)
+			{
+				file_writer.printf(ngram + " | %.8f\n", ngram.freq);
+			}
+			
+			file_writer.close();
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+	}
+	
 	/*Get standard deviation*/
 	public static double[][] getStdDev(int line_number, ArrayList<Ngrams>... texts)
 	{

@@ -65,7 +65,7 @@ public class Functions {
 		{
 			String fileout;
 
-			fileout = "db_authors/" + ngrams_dimension + "_" + filein;
+			fileout = "db_authors_ngrams_freq/" + ngrams_dimension + "_" + filein;
 			PrintWriter file_writer = new PrintWriter(fileout, "UTF-8");
 			
 			//write to file of 5 grams

@@ -23,7 +23,7 @@ public class Main {
 			
 		    //ngrams
 		    ArrayList<Ngrams> grams_DB1 = new ArrayList<Ngrams>();
-		    String file1 = "input/1.txt";
+		    String file1 = "input/th4.txt";
 		    ArrayList<Ngrams> grams_DB2 = new ArrayList<Ngrams>();
 		    String file2 = "input/w1.txt";
 		    ArrayList<Ngrams> grams_DB3 = new ArrayList<Ngrams>();
@@ -46,7 +46,7 @@ public class Main {
 		    //we write the output file of the ngrams with the freq attached
 		    //Functions.outputNgramsFreqMultipleFiles(size, grams_DB1.size(),grams_DB1, grams_DB2);
 		    
-		    Functions.putFreqsinFile("1.txt", size, grams_DB1);
+		    Functions.putFreqsinFile(file1.substring(6), size, grams_DB1);
 		}
 		catch(Exception e)
 		{

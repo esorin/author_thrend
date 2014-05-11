@@ -1,4 +1,4 @@
-package std_deviation;
+package create_db_freq_nrgams;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package std_deviation;
+package create_db_freq_nrgams;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -23,11 +23,7 @@ public class Main {
 			
 		    //ngrams
 		    ArrayList<Ngrams> grams_DB1 = new ArrayList<Ngrams>();
-		    String file1 = "input/th4.txt";
-		    ArrayList<Ngrams> grams_DB2 = new ArrayList<Ngrams>();
-		    String file2 = "input/w1.txt";
-		    ArrayList<Ngrams> grams_DB3 = new ArrayList<Ngrams>();
-		    String file3 = "in.txt";
+		    String file1 = "input/w1.txt";
 		    int size = 2;
 		    
 			// -- Extract all ngrams possibilities from all texts and write to file --//

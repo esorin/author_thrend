@@ -1,4 +1,4 @@
-package std_deviation;
+package create_db_freq_nrgams;
 
 import java.io.BufferedReader;
 import java.lang.Math;
@@ -24,7 +24,7 @@ import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 public class Functions {
 	
 	/* get freq of ngrams from file */
-	public static ArrayList<Ngrams> getFreqFromFile(int n, String file)
+	public static ArrayList<Ngrams> getFreqFromDBFile(int n, String file)
 	{
 		ArrayList<Ngrams> ngrams = new ArrayList<Ngrams>();
 		Ngrams ngram;
@@ -65,7 +65,7 @@ public class Functions {
 		{
 			String fileout;
 
-			fileout = "db_authors_ngrams_freq/" + ngrams_dimension + "_" + filein;
+			fileout = "db_freq/" + ngrams_dimension + "_" + filein;
 			PrintWriter file_writer = new PrintWriter(fileout, "UTF-8");
 			
 			//write to file of 5 grams

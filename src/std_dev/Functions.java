@@ -23,6 +23,8 @@ import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 public class Functions {
 	
+	final static int Ngrams2_lineNumber = 1337;
+	
 	/* get freq of ngrams from file */
 	public static ArrayList<Ngrams> getFreqFromDBFile(int n, String file)
 	{
@@ -132,6 +134,44 @@ public class Functions {
 		}
 		
 		return interval;
+	}
+	
+	
+	public static void createStDevGraphFile(int n, String... files)
+	{
+		try
+		{
+			if(files.length == 0)
+				return;
+			
+			String fileout = "output/out.txt";
+			PrintWriter file_writer = new PrintWriter(fileout, "UTF-8");
+			
+			double stdDev[][];
+			
+			ArrayList<Ngrams> main;
+			ArrayList<ArrayList<Ngrams>> pool = new ArrayList<ArrayList<Ngrams>>();
+			ArrayList<Ngrams> aux;
+			
+			main = getFreqFromDBFile(n, files[0]);
+			for(int i=1; i<files.length; i++)
+			{
+				aux = getFreqFromDBFile(n, files[i]);
+				pool.add(aux);
+			}
+			
+			stdDev = getStdDev(Ngrams2_lineNumber, (ArrayList<Ngrams>[]) pool.toArray());
+			
+			for(int i=0; i<Ngrams2_lineNumber; i++)
+			{
+				file_writer.printf(main.get(i) + " | %.8f  | %.8f  | %.8f\n", stdDev[i][0], main.get(i).freq, stdDev[i][1]);
+			}
+			file_writer.close();
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
 	}
 	
 	/* Get freq of n-grams from text file */

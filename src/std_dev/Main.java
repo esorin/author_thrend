@@ -23,7 +23,11 @@ public class Main {
 			
 		    //ngrams
 		    ArrayList<Ngrams> grams_DB1 = new ArrayList<Ngrams>();
-		    String file1 = "input/hg1.txt";
+		    String file1 = "db_freq/2_r3.txt";
+		    String file2 = "db_freq/2_hg3.txt";
+		    String file3 = "db_freq/2_hg3.txt";
+		    String file4 = "db_freq/2_hg4.txt";
+		    String file5 = "db_freq/2_hg5.txt";
 		    int size = 2;
 		    
 			// -- Extract all ngrams possibilities from all texts and write to file --//
@@ -33,16 +37,18 @@ public class Main {
 		    	//return;
 		    
 		    //get ngrams from files
-		    grams_DB1 = Functions.getNgramsFromFiles(size);
+		    //grams_DB1 = Functions.getNgramsFromFiles(size);
 		    //grams_DB2 = Functions.getNgramsFromFiles(size);
 		    
-		    Functions.getFreqFromText(grams_DB1, file1, size);
+		    //Functions.getFreqFromText(grams_DB1, file1, size);
 		    //Functions.getFreqFromText(grams_DB2, file2, size);
 
 		    //we write the output file of the ngrams with the freq attached
 		    //Functions.outputNgramsFreqMultipleFiles(size, grams_DB1.size(),grams_DB1, grams_DB2);
 		    
-		    Functions.putFreqsinFile(file1.substring(6), size, grams_DB1);
+		    //Functions.putFreqsinFile(file1.substring(6), size, grams_DB1);
+		    //Functions.createStDevGraphFile(size, file1, file2, file3, file4, file5);
+		    Functions.createStDevStats1(size, file1, file2, file3, file4, file5);
 		}
 		catch(Exception e)
 		{

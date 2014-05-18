@@ -12,6 +12,7 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import edu.stanford.nlp.ling.CoreLabel;
@@ -41,7 +42,8 @@ public class Functions {
 			while ((line = br.readLine()) != null) 
 			{
 				// process the line.
-				tokens = line.split(" ", n);
+				tokens = line.split(" ");
+				tokens = Arrays.copyOfRange(tokens, 0, n);
 				ngram = new Ngrams(tokens);
 				
 				freqStr = line.split(" | ");
@@ -85,7 +87,7 @@ public class Functions {
 	}
 	
 	/*Get standard deviation*/
-	public static double[][] getStdDev(int line_number, ArrayList<Ngrams>... texts)
+	public static double[][] getStdDev(int line_number, int k, ArrayList<Ngrams>... texts)
 	{
 		int text_number = texts.length;
 		double[][] db = new double[line_number][text_number];
@@ -129,8 +131,8 @@ public class Functions {
 			}
 			st[i] = Math.sqrt(sum_st[i]/text_number);
 			
-			interval[i][0] = med[i] - st[i];
-			interval[i][1] = med[i] + st[i];
+			interval[i][0] = med[i] - k*st[i];
+			interval[i][1] = med[i] + k*st[i];
 		}
 		
 		return interval;
@@ -144,29 +146,111 @@ public class Functions {
 			if(files.length == 0)
 				return;
 			
-			String fileout = "output/out.txt";
+			String fileout = "output/out1.txt";
 			PrintWriter file_writer = new PrintWriter(fileout, "UTF-8");
-			
+			file_writer.printf("##|##\n");
+			file_writer.printf("Freq|Freq-std|Freq+std\n");
 			double stdDev[][];
 			
 			ArrayList<Ngrams> main;
-			ArrayList<ArrayList<Ngrams>> pool = new ArrayList<ArrayList<Ngrams>>();
+			//ArrayList<ArrayList<Ngrams>> pool = new ArrayList<ArrayList<Ngrams>>();
+			ArrayList<Ngrams>[] pool = (ArrayList<Ngrams>[])new ArrayList[files.length-1];
 			ArrayList<Ngrams> aux;
 			
 			main = getFreqFromDBFile(n, files[0]);
 			for(int i=1; i<files.length; i++)
 			{
 				aux = getFreqFromDBFile(n, files[i]);
-				pool.add(aux);
+				pool[i-1] = aux;
 			}
 			
-			stdDev = getStdDev(Ngrams2_lineNumber, (ArrayList<Ngrams>[]) pool.toArray());
+			stdDev = getStdDev(Ngrams2_lineNumber, 2, pool);
 			
 			for(int i=0; i<Ngrams2_lineNumber; i++)
 			{
-				file_writer.printf(main.get(i) + " | %.8f  | %.8f  | %.8f\n", stdDev[i][0], main.get(i).freq, stdDev[i][1]);
+				file_writer.printf(" %.8f  | %.8f  | %.8f\n", main.get(i).freq, stdDev[i][0], stdDev[i][1]);
 			}
 			file_writer.close();
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+	}
+	
+	public static void createStDevStats0(int n, String... files)
+	{
+		try
+		{
+			if(files.length == 0)
+				return;
+			
+			//String fileout = "output/out1.txt";
+			//PrintWriter file_writer = new PrintWriter(fileout, "UTF-8");
+			//file_writer.printf("##|##\n");
+			//file_writer.printf("Freq|Freq-std|Freq+std\n");
+			int count = 0;
+			double stdDev[][];
+			
+			ArrayList<Ngrams> main;
+			ArrayList<Ngrams>[] pool = (ArrayList<Ngrams>[])new ArrayList[files.length-1];
+			ArrayList<Ngrams> aux;
+			
+			main = getFreqFromDBFile(n, files[0]);
+			for(int i=1; i<files.length; i++)
+			{
+				aux = getFreqFromDBFile(n, files[i]);
+				pool[i-1] = aux;
+			}
+			
+			stdDev = getStdDev(Ngrams2_lineNumber, 2, pool);
+			
+			for(int i=0; i<Ngrams2_lineNumber; i++)
+			{
+				//file_writer.printf(" %.8f  | %.8f  | %.8f\n", main.get(i).freq, stdDev[i][0], stdDev[i][1]);
+				if(main.get(i).freq >= stdDev[i][0] && main.get(i).freq<=stdDev[i][1])
+				{
+					count++;
+				}
+			}
+			//file_writer.close();
+			System.out.printf("%.8f", (double)(count*100)/Ngrams2_lineNumber);
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+	}
+	
+	public static void createStDevStats1(int n, String... files)
+	{
+		try
+		{
+			if(files.length == 0)
+				return;
+			
+			double sum = 0;
+			double stdDev[][];
+			
+			ArrayList<Ngrams> main;
+			ArrayList<Ngrams>[] pool = (ArrayList<Ngrams>[])new ArrayList[files.length-1];
+			ArrayList<Ngrams> aux;
+			
+			main = getFreqFromDBFile(n, files[0]);
+			for(int i=1; i<files.length; i++)
+			{
+				aux = getFreqFromDBFile(n, files[i]);
+				pool[i-1] = aux;
+			}
+			
+			stdDev = getStdDev(Ngrams2_lineNumber, 2, pool);
+			
+			for(int i=0; i<Ngrams2_lineNumber; i++)
+			{
+				sum += Math.abs(((stdDev[i][0] + stdDev[i][1])/2) - main.get(i).freq);
+				
+			}
+			System.out.printf("%.8f", sum);
 		}
 		catch(Exception e)
 		{

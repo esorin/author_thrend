@@ -23,8 +23,8 @@ public class Main {
 			
 		    //ngrams
 		    ArrayList<Ngrams> grams_DB1 = new ArrayList<Ngrams>();
-		    String file1 = "input/w1.txt";
-		    int size = 2;
+		    String file1 = "input/hg5.txt";
+		    int size = 4;
 		    
 			// -- Extract all ngrams possibilities from all texts and write to file --//
 		    //Functions.putNgramsinFiles();

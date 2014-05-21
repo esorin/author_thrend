@@ -24,7 +24,7 @@ public class Main {
 		    //ngrams
 		    ArrayList<Ngrams> grams_DB1 = new ArrayList<Ngrams>();
 		    String file1 = "input/hg5.txt";
-		    int size = 4;
+		    int size = 5;
 		    
 			// -- Extract all ngrams possibilities from all texts and write to file --//
 		    //Functions.putNgramsinFiles();

@@ -25,6 +25,9 @@ import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 public class Functions {
 	
 	final static int Ngrams2_lineNumber = 1337;
+	final static int Ngrams3_lineNumber = 15718;
+	final static int Ngrams4_lineNumber = 63024;
+	final static int Ngrams5_lineNumber = 203187;
 	
 	/* get freq of ngrams from file */
 	public static ArrayList<Ngrams> getFreqFromDBFile(int n, String file)
@@ -139,10 +142,21 @@ public class Functions {
 	}
 	
 	
-	public static void createStDevGraphFile(int n, String... files)
+	public static void createStDevGraphFile(int n, int k, String... files)
 	{
 		try
 		{
+			int line_number=0;
+			
+			if(n==2)
+				line_number = Ngrams2_lineNumber;
+			else if(n==3)
+				line_number = Ngrams3_lineNumber;
+			else if(n==4)
+				line_number = Ngrams4_lineNumber;
+			else if(n==5)
+				line_number = Ngrams5_lineNumber;
+			
 			if(files.length == 0)
 				return;
 			
@@ -164,9 +178,9 @@ public class Functions {
 				pool[i-1] = aux;
 			}
 			
-			stdDev = getStdDev(Ngrams2_lineNumber, 2, pool);
+			stdDev = getStdDev(line_number, k, pool);
 			
-			for(int i=0; i<Ngrams2_lineNumber; i++)
+			for(int i=0; i<line_number; i++)
 			{
 				file_writer.printf(" %.8f  | %.8f  | %.8f\n", main.get(i).freq, stdDev[i][0], stdDev[i][1]);
 			}
@@ -178,10 +192,21 @@ public class Functions {
 		}
 	}
 	
-	public static void createStDevStats0(int n, String... files)
+	public static void createStDevStats0(int n, int k, String... files)
 	{
 		try
 		{
+			int line_number=0;
+			
+			if(n==2)
+				line_number = Ngrams2_lineNumber;
+			else if(n==3)
+				line_number = Ngrams3_lineNumber;
+			else if(n==4)
+				line_number = Ngrams4_lineNumber;
+			else if(n==5)
+				line_number = Ngrams5_lineNumber;
+			
 			if(files.length == 0)
 				return;
 			
@@ -203,9 +228,9 @@ public class Functions {
 				pool[i-1] = aux;
 			}
 			
-			stdDev = getStdDev(Ngrams2_lineNumber, 2, pool);
+			stdDev = getStdDev(line_number, k, pool);
 			
-			for(int i=0; i<Ngrams2_lineNumber; i++)
+			for(int i=0; i<line_number; i++)
 			{
 				//file_writer.printf(" %.8f  | %.8f  | %.8f\n", main.get(i).freq, stdDev[i][0], stdDev[i][1]);
 				if(main.get(i).freq >= stdDev[i][0] && main.get(i).freq<=stdDev[i][1])
@@ -214,7 +239,7 @@ public class Functions {
 				}
 			}
 			//file_writer.close();
-			System.out.printf("%.8f", (double)(count*100)/Ngrams2_lineNumber);
+			System.out.printf("%.8f\n", (double)(count*100)/line_number);
 		}
 		catch(Exception e)
 		{
@@ -222,10 +247,21 @@ public class Functions {
 		}
 	}
 	
-	public static void createStDevStats1(int n, String... files)
+	public static void createStDevStats1(int n, int k, String... files)
 	{
 		try
 		{
+			int line_number=0;
+			
+			if(n==2)
+				line_number = Ngrams2_lineNumber;
+			else if(n==3)
+				line_number = Ngrams3_lineNumber;
+			else if(n==4)
+				line_number = Ngrams4_lineNumber;
+			else if(n==5)
+				line_number = Ngrams5_lineNumber;
+			
 			if(files.length == 0)
 				return;
 			
@@ -243,14 +279,14 @@ public class Functions {
 				pool[i-1] = aux;
 			}
 			
-			stdDev = getStdDev(Ngrams2_lineNumber, 2, pool);
+			stdDev = getStdDev(line_number, k, pool);
 			
-			for(int i=0; i<Ngrams2_lineNumber; i++)
+			for(int i=0; i<line_number; i++)
 			{
 				sum += Math.abs(((stdDev[i][0] + stdDev[i][1])/2) - main.get(i).freq);
 				
 			}
-			System.out.printf("%.8f", sum);
+			System.out.printf("%.8f\n", sum);
 		}
 		catch(Exception e)
 		{
